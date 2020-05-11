@@ -1,17 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Notifications
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  
+  <ion-grid>
+    <ion-list *ngFor="let notif of notifs">
+      <ion-item>
+        <ion-avatar slot="start"><img src="{{notif.account.avatar_static}}"></ion-avatar>
+        <ion-label> {{notif.type}} by {{notif.account.display_name}} </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-grid>
 
   <app-explore-container name="Tab 3 page"></app-explore-container>
 </ion-content>
