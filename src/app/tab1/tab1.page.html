@@ -9,8 +9,16 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="large">Profile</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-card id="account">
+    <ion-card-content>
+      <ion-avatar slot="start"><img src="{{account?.avatar}}"></ion-avatar>
+      <ion-label>{{account?.display_name}}</ion-label><br>
+      <ion-label>{{account?.acct}}</ion-label>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>

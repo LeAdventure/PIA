@@ -9,7 +9,7 @@ export class GeneralService {
   constructor( private client: HttpClient) { }
 
   validateCredentials( instanceURL:string, token:string ) {
-    let response = this.client.get( instanceURL + '/api/v1/apps/verify_credentials', { headers: { 'Authorization' : `Bearer ${token}` }} );
+    let response = this.client.get( instanceURL + '/api/v1/accounts/verify_credentials', { headers: { 'Authorization' : `Bearer ${token}` }} );
     return response;
   }
 
