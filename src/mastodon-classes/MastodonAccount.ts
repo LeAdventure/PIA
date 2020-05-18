@@ -6,6 +6,9 @@ export class MastodonAccount {
     username:string;
     acct:string;
     url:string;
+    token:string;
+    instance:string;
+    
     // Display
     display_name:string;
     avatar:string;

@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Profile
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,11 +13,47 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card id="account">
+  <ion-card *ngIf="getCurrent() !== null">
+    <ion-card-header>
+      Active account
+    </ion-card-header>
     <ion-card-content>
-      <ion-avatar slot="start"><img src="{{account?.avatar}}"></ion-avatar>
-      <ion-label>{{account?.display_name}}</ion-label><br>
-      <ion-label>{{account?.acct}}</ion-label>
+      <ion-avatar slot="start"><img src="{{getCurrent().avatar}}"></ion-avatar>
+      <ion-label>{{getCurrent().display_name}}</ion-label><br>
+      <ion-label>{{getCurrent().acct}}</ion-label>
+      <ion-label>{{getCurrent().instance}}</ion-label><br>
+      <ion-button (click)="setCurrent(null)">Log Out</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Agregar Cuenta
+    </ion-card-header>
+    <ion-card-content>
+      <add-account></add-account>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Select Account
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-button (click)="clearStorage()"><ion-icon name="trash-outline"></ion-icon> Remove All </ion-button>
+        <ion-item *ngFor="let account of accounts">
+          <ion-avatar slot="start">
+            <img src="{{account.avatar}}">
+          </ion-avatar>
+          <ion-label> {{account.display_name}}</ion-label>
+          <ion-label> ({{account.url}}) </ion-label>
+          <ion-button (click)="setCurrent(account)">Select</ion-button>
+          <ion-button (click)="deleteAccount(account.token)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-list>
     </ion-card-content>
   </ion-card>
 

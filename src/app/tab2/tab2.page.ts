@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { GeneralService } from 'src/services/general.service';
+import { CurrentAccountService } from 'src/services/current-account.service';
 
 
 @Component({
@@ -8,14 +9,16 @@ import { GeneralService } from 'src/services/general.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-  private instanceURL :string = "https://botsin.space";
-  private token :string = "hNAusBxqZEfPFKPYrjJ213Vou9GzZRBfnr1AWQPC9vw";
+  
+  
   @Input() private text:string;
 
   constructor( private general:GeneralService ) {}
-
+  getCurrent() {
+    return CurrentAccountService.getCurrent();
+  }
   postToot(): void {
-    this.general.postToot(this.instanceURL, this.token, this.text).subscribe(
+    this.general.postToot(this.getCurrent().instance, this.getCurrent().token, this.text).subscribe(
       (data)=>{
         alert("Posted Succesfully");
       },

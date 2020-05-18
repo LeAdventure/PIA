@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { GeneralService } from 'src/services/general.service';
 import {MastodonNotif } from 'src/mastodon-classes/MastodonNotif';
+import { CurrentAccountService } from 'src/services/current-account.service';
 
 @Component({
   selector: 'app-tab3',
@@ -9,14 +10,16 @@ import {MastodonNotif } from 'src/mastodon-classes/MastodonNotif';
 })
 export class Tab3Page {
 
-  private instanceURL :string = "https://botsin.space";
-  private token :string = "hNAusBxqZEfPFKPYrjJ213Vou9GzZRBfnr1AWQPC9vw";
+ 
   private notifs :Array<MastodonNotif> = [];
 
   constructor( private general : GeneralService ) {}
-
+  getCurrent() {
+    return CurrentAccountService.getCurrent();
+  }
   ionViewWillEnter() {
-    this.loadNotifs();
+    if (this.getCurrent() !== null)
+      this.loadNotifs();
   }
 
   ionViewWillLeave() {
@@ -24,7 +27,7 @@ export class Tab3Page {
   }
 
   loadNotifs(): void {
-    this.general.getNotifs( this.instanceURL, this.token ).subscribe(
+    this.general.getNotifs( this.getCurrent().instance, this.getCurrent().token ).subscribe(
       (data : any) => {
         this.notifs = data;
       },

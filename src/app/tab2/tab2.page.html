@@ -11,7 +11,10 @@
     <ion-card-header>
       <ion-card-title> Toot Something! </ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content *ngIf="getCurrent()===null">
+      Please Sign In before Tooting
+    </ion-card-content>
+    <ion-card-content *ngIf="getCurrent()!==null">
       <ion-input [(ngModel)]="text"></ion-input>
       <ion-button (click)="postToot()">Toot!</ion-button>
     </ion-card-content>

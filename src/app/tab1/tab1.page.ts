@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { GeneralService } from 'src/services/general.service';
-import {MastodonAccount} from 'src/mastodon-classes/MastodonAccount'
+import { MastodonAccount } from 'src/mastodon-classes/MastodonAccount';
+import { Storage } from '@ionic/storage';
+import { AlertController } from '@ionic/angular';
+import { CurrentAccountService } from 'src/services/current-account.service';
+
 
 @Component({
   selector: 'app-tab1',
@@ -8,21 +12,104 @@ import {MastodonAccount} from 'src/mastodon-classes/MastodonAccount'
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  private instanceURL :string = "https://botsin.space";
-  private token :string = "hNAusBxqZEfPFKPYrjJ213Vou9GzZRBfnr1AWQPC9vw";
-  private account :MastodonAccount = null;
+  
+  private accounts :MastodonAccount[];
 
-  constructor(private general: GeneralService) { }
+  constructor(
+    private storage: Storage,
+    private general: GeneralService,
+    private alertCtrl: AlertController,
+  ) { }
 
-  ionViewWillEnter() {
-    this.general.validateCredentials(this.instanceURL, this.token).subscribe(
-      (data : any) => {
-        this.account = data;
-      }, 
-      (error) => {
-        alert("Something went wrong");
-      }
-    );
+  getCurrent() {
+    return CurrentAccountService.getCurrent();
+  }
+  setCurrent(account : MastodonAccount){
+    CurrentAccountService.setCurrent(account);
+  }
+
+  listAccounts(){
+    this.accounts = [];
+    this.storage.keys().then(
+      (keys)=>{
+        for (let i :number = 0; i < keys.length; i++) {
+          this.storage.get(keys[i]).then( (val)=>{
+            this.general.validateCredentials( val,keys[i] ).subscribe(
+              (data:MastodonAccount)=>{
+                let a:MastodonAccount = data;
+                a.token = keys[i];
+                a.instance = val;
+                this.accounts.push(a);
+              },
+              (error)=>{
+                console.log("Error at element with id " + keys[i]);
+                this.storage.remove(keys[i]);
+    })})}});
+  }
+
+  onInit(){
+
+  }
+
+  ionViewWillEnter() { 
+    this.listAccounts();
   }  
 
+  async clearStorage() {
+    const alert = await this.alertCtrl.create({
+      header: 'Continue?',
+      message: 'If you continue, all the accounts listed below WILL be removed',
+      buttons: [{
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'primary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          } 
+        }, {
+          text: 'Confirm',
+          cssClass: 'danger',
+          handler: () => {
+            console.log('Deleting accounts');
+            this.storage.clear();
+            this.listAccounts();
+          }
+        }]
+    });
+    await alert.present();
+  }
+
+  async deleteAccount(token:string) {
+    const alert = await this.alertCtrl.create({
+      header: 'Continue?',
+      message: 'If you continue, this account WILL be removed',
+      buttons: [{
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'primary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Confirm',
+          cssClass: 'danger',
+          handler: () => {
+            console.log('Deleting accounts');
+            this.storage.remove(token).then(res=>console.log("Succesfully removed account"));
+            this.listAccounts();
+          }
+        }]
+    });
+    await alert.present();
+  }
+
+  storageSize() : number {
+    let size :number = NaN;
+    this.storage.length().then( (result => {
+      size = result;
+    }))
+    return size;
+  }
+
+  
 }
