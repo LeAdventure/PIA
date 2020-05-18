@@ -12,10 +12,13 @@
       <ion-title size="large">Notifications</ion-title>
     </ion-toolbar>
   </ion-header>
+
   <ion-card>
+    
     <ion-card-header>
       <ion-card-title> Notifications </ion-card-title>
     </ion-card-header>
+
     <ion-card-content *ngIf="getCurrent()===null">
       Please Sign In before viewing your Notifications
     </ion-card-content>
