@@ -13,7 +13,7 @@ import { CurrentAccountService } from 'src/services/current-account.service';
 })
 export class Tab1Page {
   
-  private accounts :MastodonAccount[];
+  accounts :MastodonAccount[];
 
   constructor(
     private storage: Storage,

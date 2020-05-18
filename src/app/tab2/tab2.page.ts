@@ -11,7 +11,7 @@ import { CurrentAccountService } from 'src/services/current-account.service';
 export class Tab2Page {
   
   
-  @Input() private text:string;
+  @Input() text:string;
 
   constructor( private general:GeneralService ) {}
   getCurrent() {

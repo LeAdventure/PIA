@@ -11,7 +11,7 @@ import { CurrentAccountService } from 'src/services/current-account.service';
 export class Tab3Page {
 
  
-  private notifs :Array<MastodonNotif> = [];
+  notifs :Array<MastodonNotif> = [];
 
   constructor( private general : GeneralService ) {}
   getCurrent() {
