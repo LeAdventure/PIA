@@ -13,16 +13,25 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-card *ngIf="getCurrent() !== null">
+  <ion-card>
+    
     <ion-card-header>
-      Active account
+      <ion-card-title> Active account </ion-card-title>
     </ion-card-header>
-    <ion-card-content>
-      <ion-avatar slot="start"><img src="{{getCurrent().avatar}}"></ion-avatar>
-      <ion-label>{{getCurrent().display_name}}</ion-label><br>
-      <ion-label>{{getCurrent().acct}}</ion-label>
-      <ion-label>{{getCurrent().instance}}</ion-label><br>
-      <ion-button (click)="setCurrent(null)">Log Out</ion-button>
+    
+    <ion-card-content *ngIf="getCurrent() !== null">
+      
+      
+      <div class="center">
+        <ion-img src="{{getCurrent().avatar}}"></ion-img>
+        <ion-label>{{getCurrent().display_name}}</ion-label><br>
+        <ion-label>{{getCurrent().acct}}</ion-label><br>
+        <ion-label>{{getCurrent().instance}}</ion-label><br>
+        <ion-button (click)="setCurrent(null)">Log Out</ion-button>
+      </div>
+    </ion-card-content>
+    <ion-card-content *ngIf="getCurrent()===null">
+      Please Sign In before viewing Account Details
     </ion-card-content>
   </ion-card>
 
@@ -41,17 +50,35 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <ion-button (click)="clearStorage()"><ion-icon name="trash-outline"></ion-icon> Remove All </ion-button>
+        <div class="center">
+          <ion-button (click)="clearStorage()" color="danger"><ion-icon name="trash-outline"></ion-icon> Remove All </ion-button>
+        </div>
         <ion-item *ngFor="let account of accounts">
           <ion-avatar slot="start">
             <img src="{{account.avatar}}">
           </ion-avatar>
-          <ion-label> {{account.display_name}}</ion-label>
-          <ion-label> ({{account.url}}) </ion-label>
-          <ion-button (click)="setCurrent(account)">Select</ion-button>
-          <ion-button (click)="deleteAccount(account.token)">
-            <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
+          <ion-grid>
+            <ion-row>
+              <ion-col><ion-label> {{account.display_name}}</ion-label></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col><ion-label> {{account.instance}}</ion-label></ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <div class="center">
+                  <ion-button (click)="setCurrent(account)">Select</ion-button> 
+                </div>
+              </ion-col>
+              <ion-col class="deleteIconAccount">
+                <div class="center">
+                  <ion-button (click)="deleteAccount(account.token)" color="danger">
+                    <ion-icon name="trash-outline"></ion-icon>
+                  </ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-item>
       </ion-list>
     </ion-card-content>

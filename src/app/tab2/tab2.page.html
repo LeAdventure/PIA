@@ -7,10 +7,18 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Tooting</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
   <ion-card>
+
     <ion-card-header>
       <ion-card-title> Toot Something! </ion-card-title>
     </ion-card-header>
+    
     <ion-card-content *ngIf="getCurrent()===null">
       Please Sign In before Tooting
     </ion-card-content>
